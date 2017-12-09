@@ -20,7 +20,7 @@
     <script>
       var map;
       var infowindow;
-
+	  var j = 0;
       function initMap() {
         var pyrmont = {lat: 24.178803, lng: 120.646717};
 
@@ -42,49 +42,28 @@
           location: pyrmont,
           radius: '5000',
           query: '台中市西屯區'+'加油站'
-        }, callback2); 
+        }, callback); 
       }
 
       function callback(results, status) {
+		icon = j++==0?'pos.png':'gas.png';
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-          }
-        }
-      }
-	  
-	  function callback2(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            createMarker2(results[i]);
+            createMarker(results[i],icon);
           }
         }
       }
 
-      function createMarker(place) {
+      function createMarker(place,icon) {
         var placeLoc = place.geometry.location;
         var marker = new google.maps.Marker({
           map: map,
           position: place.geometry.location,
-		  icon:'pos.png'
+		  icon:icon
         });
 
         google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent('<div><strong>'+place.name +'</strong><br>'+ place.formatted_address +'</div>');
-          infowindow.open(map, this);
-        });
-      }
-	  
-	  function createMarker2(place) {
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location,
-		  icon:'gas.png'
-        });
-
-        google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent('<div><strong>'+place.name +'</strong><br>'+ place.formatted_address +'</div>');
+          infowindow.setContent('<div><strong>'+ place.name +'</strong><br>'+ place.formatted_address +'</div>');
           infowindow.open(map, this);
         });
       }
